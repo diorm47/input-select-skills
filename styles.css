@@ -9,7 +9,7 @@
 }
 
 input[type="text"] {
-  width: 100%;
+  width: calc(100% - 40px);
   padding: 10px;
   height: 50px;
   border: 1px solid #ccc;
@@ -17,6 +17,24 @@ input[type="text"] {
   font-size: 16px;
   box-sizing: border-box;
   outline: none;
+}
+
+button {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  padding: 0 10px;
+  border: none;
+  background: #4caf50;
+  color: white;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button.hidden {
+  display: none;
 }
 
 #recommendedSkillsContainer {
@@ -61,7 +79,8 @@ input[type="text"] {
   width: 100%;
   text-align: left;
 }
-.dropdown div:hover {
+.dropdown div:hover,
+.dropdown div.active {
   background: #e0e0e0;
 }
 
@@ -70,7 +89,6 @@ input[type="text"] {
   display: flex;
   flex-wrap: wrap;
 }
-
 .selected-skill {
   display: flex;
   align-items: center;
@@ -87,5 +105,4 @@ input[type="text"] {
 
 .selected-skill .remove-skill {
   cursor: pointer;
-  color: #f00;
 }
