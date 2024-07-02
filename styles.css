@@ -1,0 +1,91 @@
+.skill-container {
+  width: 600px;
+  margin: 20px auto;
+  font-family: sans-serif;
+}
+
+.skill-input {
+  position: relative;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  height: 50px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+  outline: none;
+}
+
+#recommendedSkillsContainer {
+  position: absolute;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-top: none;
+  background: #fff;
+  z-index: 1;
+}
+
+.hidden {
+  display: none;
+}
+
+.recommended-title {
+  padding: 10px;
+  background: #f0f0f0;
+  border-bottom: 1px solid #ccc;
+}
+
+.dropdown {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.dropdown.grid div {
+  margin: 5px;
+  box-sizing: border-box;
+}
+
+.dropdown div {
+  padding: 10px;
+  cursor: pointer;
+  margin: 5px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  text-align: center;
+}
+.column div {
+  width: 100%;
+  text-align: left;
+}
+.dropdown div:hover {
+  background: #e0e0e0;
+}
+
+.selected-skills {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.selected-skill {
+  display: flex;
+  align-items: center;
+  width: auto;
+  background: #e0e0e0;
+  border-radius: 4px;
+  padding: 5px 10px;
+  margin: 5px;
+}
+
+.selected-skill span {
+  margin-right: 5px;
+}
+
+.selected-skill .remove-skill {
+  cursor: pointer;
+  color: #f00;
+}
