@@ -17,6 +17,7 @@ const recommendedSkills = document.getElementById("recommendedSkills");
 const selectedSkillsContainer = document.getElementById("selectedSkills");
 const recommendedTitle = document.querySelector(".recommended-title");
 let activeIndex = -1;
+let selectedSkills = [];
 
 input.addEventListener("input", function () {
   const query = input.value.toLowerCase();
@@ -112,18 +113,28 @@ function updateActiveItem(items) {
 }
 
 function addSkill(skill) {
-  const skillElement = document.createElement("div");
-  skillElement.className = "selected-skill";
-  skillElement.innerHTML = `<span>${skill}</span> <svg class="remove-skill" onclick="removeSkill(this)" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7277 11.3137L17.6774 6.36396L16.2632 4.94975L11.3135 9.8995L6.36373 4.94975L4.94951 6.36396L9.89926 11.3137L4.94952 16.2635L6.36373 17.6777L11.3135 12.7279L16.2632 17.6777L17.6774 16.2635L12.7277 11.3137Z" fill="#fff"/>
-    </svg>
-     `;
-  selectedSkillsContainer.appendChild(skillElement);
-  input.value = "";
-  recommendedSkillsContainer.classList.add("hidden");
-  addSkillButton.classList.add("hidden");
+  if (!selectedSkills.includes(skill)) {
+    const skillElement = document.createElement("div");
+    skillElement.className = "selected-skill";
+    skillElement.innerHTML = `<span>${skill}</span> 
+      <svg class="remove-skill" onclick="removeSkill(this)" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7277 11.3137L17.6774 6.36396L16.2632 4.94975L11.3135 9.8995L6.36373 4.94975L4.94951 6.36396L9.89926 11.3137L4.94952 16.2635L6.36373 17.6777L11.3135 12.7279L16.2632 17.6777L17.6774 16.2635L12.7277 11.3137Z" fill="#fff"/>
+      </svg>`;
+    selectedSkillsContainer.appendChild(skillElement);
+    selectedSkills.push(skill);
+    input.value = "";
+    recommendedSkillsContainer.classList.add("hidden");
+    addSkillButton.classList.add("hidden");
+  }
 }
 
 function removeSkill(element) {
+  const skill = element.parentElement.querySelector("span").textContent;
+  selectedSkills = selectedSkills.filter((s) => s !== skill);
   selectedSkillsContainer.removeChild(element.parentElement);
 }
+
+function getSelectedSkills() {
+  return selectedSkills;
+}
+console.log(getSelectedSkills());
