@@ -1,13 +1,3 @@
-const skills = [
-  "JavaScript",
-  "HTML",
-  "CSS",
-  "React",
-  "Node.js",
-  "Python",
-  "Java",
-  "C++",
-];
 const input = document.getElementById("skillInput");
 const addSkillButton = document.getElementById("addSkillButton");
 const recommendedSkillsContainer = document.getElementById(
@@ -16,8 +6,12 @@ const recommendedSkillsContainer = document.getElementById(
 const recommendedSkills = document.getElementById("recommendedSkills");
 const selectedSkillsContainer = document.getElementById("selectedSkills");
 const recommendedTitle = document.querySelector(".recommended-title");
+
 let activeIndex = -1;
 let selectedSkills = [];
+let allSkills = Array.from(recommendedSkills.children).map(
+  (item) => item.dataset.skill
+);
 
 input.addEventListener("input", function () {
   const query = input.value.toLowerCase();
@@ -67,27 +61,25 @@ function updateActiveItem(items) {
 }
 
 function updateRecommendedSkills(query = "") {
-  recommendedSkills.innerHTML = "";
+  const items = allSkills.filter((skill) => !selectedSkills.includes(skill));
   activeIndex = -1;
-  const lowerCaseQuery = query.toLowerCase();
-  let filteredSkills = skills.filter(
-    (skill) => !selectedSkills.includes(skill)
-  );
 
-  if (lowerCaseQuery) {
+  recommendedSkills.innerHTML = "";
+
+  if (query) {
     recommendedTitle.classList.add("hidden");
     recommendedSkills.classList.remove("grid");
     recommendedSkills.classList.add("column");
     addSkillButton.classList.remove("hidden");
-    const matches = filteredSkills.filter((skill) =>
-      skill.toLowerCase().includes(lowerCaseQuery)
+
+    const matches = items.filter((skill) =>
+      skill.toLowerCase().includes(query)
     );
+
     if (matches.length) {
       matches.forEach((skill) => {
-        const div = document.createElement("div");
-        div.textContent = skill;
-        div.addEventListener("click", () => addSkill(skill));
-        recommendedSkills.appendChild(div);
+        const item = createSkillItem(skill);
+        recommendedSkills.appendChild(item);
       });
     } else {
       const div = document.createElement("div");
@@ -99,15 +91,23 @@ function updateRecommendedSkills(query = "") {
     addSkillButton.classList.add("hidden");
     recommendedSkills.classList.remove("column");
     recommendedSkills.classList.add("grid");
-    filteredSkills.forEach((skill) => {
-      const div = document.createElement("div");
-      div.textContent = skill;
-      div.addEventListener("click", () => addSkill(skill));
-      recommendedSkills.appendChild(div);
+
+    items.forEach((skill) => {
+      const item = createSkillItem(skill);
+      recommendedSkills.appendChild(item);
     });
     recommendedTitle.classList.remove("hidden");
   }
   recommendedSkillsContainer.classList.remove("hidden");
+}
+
+function createSkillItem(skill) {
+  const item = document.createElement("div");
+  item.className = "skill-item";
+  item.dataset.skill = skill;
+  item.textContent = skill;
+  item.addEventListener("click", () => addSkill(skill));
+  return item;
 }
 
 function addSkill(skill) {
@@ -121,8 +121,6 @@ function addSkill(skill) {
     selectedSkillsContainer.appendChild(skillElement);
     selectedSkills.push(skill);
     input.value = "";
-    recommendedSkillsContainer.classList.add("hidden");
-    addSkillButton.classList.add("hidden");
     updateRecommendedSkills();
   }
 }
