@@ -42,16 +42,23 @@ input.addEventListener("keydown", (event) => {
     event.preventDefault();
   } else if (event.key === "Enter") {
     if (activeIndex >= 0 && activeIndex < items.length) {
-      addSkill(items[activeIndex].textContent);
+      const selectedItem = items[activeIndex];
+      if (selectedItem.classList.contains("add-new-skill")) {
+        addSkill(input.value);
+      } else {
+        addSkill(selectedItem.textContent);
+      }
     } else {
       addSkill(input.value);
     }
     event.preventDefault();
+    recommendedSkillsContainer.classList.add("hidden");
   }
 });
 
 addSkillButton.addEventListener("click", () => {
   addSkill(input.value);
+  recommendedSkillsContainer.classList.add("hidden");
 });
 
 function updateActiveItem(items) {
@@ -70,7 +77,6 @@ function updateRecommendedSkills(query = "") {
     recommendedTitle.classList.add("hidden");
     recommendedSkills.classList.remove("grid");
     recommendedSkills.classList.add("column");
-    addSkillButton.classList.remove("hidden");
 
     const matches = items.filter((skill) =>
       skill.toLowerCase().includes(query)
@@ -81,11 +87,20 @@ function updateRecommendedSkills(query = "") {
         const item = createSkillItem(skill);
         recommendedSkills.appendChild(item);
       });
-    } else {
+    }
+
+    if (matches.length === 0) {
       const div = document.createElement("div");
+      div.className = "skill-item add-new-skill";
       div.textContent = `Добавить "${input.value}"`;
-      div.addEventListener("click", () => addSkill(input.value));
+      div.addEventListener("click", () => {
+        addSkill(input.value);
+        recommendedSkillsContainer.classList.add("hidden");
+      });
       recommendedSkills.appendChild(div);
+      addSkillButton.classList.remove("hidden");
+    } else {
+      addSkillButton.classList.add("hidden");
     }
   } else {
     addSkillButton.classList.add("hidden");
@@ -106,12 +121,15 @@ function createSkillItem(skill) {
   item.className = "skill-item";
   item.dataset.skill = skill;
   item.textContent = skill;
-  item.addEventListener("click", () => addSkill(skill));
+  item.addEventListener("click", () => {
+    addSkill(skill);
+    recommendedSkillsContainer.classList.add("hidden");
+  });
   return item;
 }
 
 function addSkill(skill) {
-  if (!selectedSkills.includes(skill)) {
+  if (!selectedSkills.includes(skill) && skill.trim()) {
     const skillElement = document.createElement("div");
     skillElement.className = "selected-skill";
     skillElement.innerHTML = `<span>${skill}</span> 
